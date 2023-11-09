@@ -21,6 +21,8 @@ class Server{
     middlewares(){
         // protet con cors
         this.app.use(cors());
+        // Lectura y parseo del body usando POST.Serialisar a un json 
+        this.app.use(express.json());
         // directorio publico
         this.app.use(express.static('public'));
     }

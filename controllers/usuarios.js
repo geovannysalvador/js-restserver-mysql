@@ -8,15 +8,24 @@ const usuariosGet = (req = request, res =  response) => {
     })
   }
 
-  const usuariosPut = (req = request, res =  response) => {
+
+  const usuariosPost = (req = request, res =  response) => {
+
+    const body = req.body;
+
     res.json({
-        msg: 'put API controllador'
+        msg: 'post API controllador =  se posteo un usuario',
+        body
     })
   }
 
-  const usuariosPost = (req = request, res =  response) => {
+  const usuariosPut = (req = request, res =  response) => {
+
+    const body = req.params.id
+
     res.json({
-        msg: 'post API controllador'
+        msg: 'put API controllador',
+        body
     })
   }
 

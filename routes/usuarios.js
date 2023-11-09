@@ -5,13 +5,13 @@ const {  usuariosPut, usuariosPost, usuariosDelete, usuariosGet } = require('../
 
 const router = Router();
 
- router.get('/', usuariosGet);
-
-  router.put('/', usuariosPut);
+  router.get('/', usuariosGet);
 
   router.post('/', usuariosPost);
 
-  router.delete('/', usuariosDelete);
+  router.put('/:id', usuariosPut);
+
+  router.delete('/:id', usuariosDelete);
 
 
 module.exports = router;
