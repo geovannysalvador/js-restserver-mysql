@@ -33,24 +33,62 @@ const getUsuario = async (req = request, res = response) => {
 }
 
 
-const postUsuario = (req = request, res = response) => {
+const postUsuario = async (req = request, res = response) => {
 
-  const body = req.body;
+  const {body} = req;
 
-  res.json({
-    msg: 'post API controllador =  se posteo un usuario',
-    body
-  })
+  try {
+
+    const existeEmail = await Usuario.findOne({
+      where: {
+        correo: body.correo
+      }
+    });
+
+    if(existeEmail){
+      return res.status(400).json({
+        msg: 'Ya existe el correo: ' + body.correo
+      });
+    }
+
+    const usuario = new Usuario(body);
+    await usuario.save();
+
+    res.json(usuario);
+    
+  } catch (error) {
+    res.status(500).json({
+      msg: 'No se logro almacenar en la BD'
+    })
+  }
+
 }
 
-const putUsuario = (req = request, res = response) => {
+const putUsuario = async (req = request, res = response) => {
 
-  const body = req.params.id
+  const {id} = req.params
+  const {body} = req
 
-  res.json({
-    msg: 'put API controllador',
-    body
-  })
+  try {
+
+    const usuario = await Usuario.findByPk(id)
+
+    if(!usuario){
+      return res.status(404).json({
+        msg: 'No existe el usuario con el id: ' + id
+      });
+    }
+
+    await usuario.update(body);
+
+    res.json(usuario);
+    
+  } catch (error) {
+    res.status(500).json({
+      msg: 'No se logro almacenar en la BD'
+    })
+  }
+  
 }
 
 const deleteUsuario = (req = request, res = response) => {
