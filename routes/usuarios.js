@@ -5,9 +5,9 @@ const { getUsuario, getUsuarios, postUsuario, putUsuario, deleteUsuario } = requ
 
 const router = Router();
 
-  router.get('/', getUsuario);
+  router.get('/', getUsuarios);
 
-  router.get('/:id', getUsuarios);
+  router.get('/:id', getUsuario);
 
   router.post('/', postUsuario);
 
