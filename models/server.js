@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const db = require('../db/connection');
 
 
 
@@ -11,11 +12,24 @@ class Server{
         this.port = process.env.PORT;
         // ruta de los las peticiones
         this.usuariosPath = '/coffe/usuarios';
+        // Llamar a la bd
+        this.dbConnection();
         // Middlewares
         this.middlewares();
         // LLamar las rutas
         this.routes();
 
+    }
+
+    async dbConnection(){
+
+        try {
+            await db.authenticate();
+            console.log('La BD esta en linea');
+            
+        } catch (error) {
+            throw new Error('No se puede conectar a la BD', error)
+        }
     }
 
     middlewares(){
