@@ -17,14 +17,14 @@ const getUsuarios = async (req = request, res = response) => {
 
 const getUsuario = async (req = request, res = response) => {
 
-  const {id} = req.params;
+  const { id } = req.params;
   const usuario = await Usuario.findByPk(id);
 
-  if(usuario) {
+  if (usuario) {
 
     res.json(usuario)
 
-  }else{
+  } else {
     res.status(404).json({
       msg: 'No exoste el usuario con el id: ' + id
     });
@@ -35,7 +35,7 @@ const getUsuario = async (req = request, res = response) => {
 
 const postUsuario = async (req = request, res = response) => {
 
-  const {body} = req;
+  const { body } = req;
 
   try {
 
@@ -45,7 +45,7 @@ const postUsuario = async (req = request, res = response) => {
       }
     });
 
-    if(existeEmail){
+    if (existeEmail) {
       return res.status(400).json({
         msg: 'Ya existe el correo: ' + body.correo
       });
@@ -55,7 +55,7 @@ const postUsuario = async (req = request, res = response) => {
     await usuario.save();
 
     res.json(usuario);
-    
+
   } catch (error) {
     res.status(500).json({
       msg: 'No se logro almacenar en la BD'
@@ -66,14 +66,14 @@ const postUsuario = async (req = request, res = response) => {
 
 const putUsuario = async (req = request, res = response) => {
 
-  const {id} = req.params
-  const {body} = req
+  const { id } = req.params
+  const { body } = req
 
   try {
 
     const usuario = await Usuario.findByPk(id)
 
-    if(!usuario){
+    if (!usuario) {
       return res.status(404).json({
         msg: 'No existe el usuario con el id: ' + id
       });
@@ -82,19 +82,36 @@ const putUsuario = async (req = request, res = response) => {
     await usuario.update(body);
 
     res.json(usuario);
-    
+
   } catch (error) {
     res.status(500).json({
       msg: 'No se logro almacenar en la BD'
     })
   }
-  
+
 }
 
-const deleteUsuario = (req = request, res = response) => {
-  res.json({
-    msg: 'Delete API controllador'
-  })
+const deleteUsuario = async (req = request, res = response) => {
+
+  const { id } = req.params;
+
+  const usuario = await Usuario.findByPk(id)
+
+  if (!usuario) {
+    return res.status(404).json({
+      msg: 'No existe el usuario con el id: ' + id
+    });
+  }
+
+  // Eliminarlo permanentemente de la bd
+  // await usuario.destroy();
+
+  // Cambiarle el estado a cero como en la BD se indico
+  await usuario.update({ estado: false });
+
+  res.json(usuario)
+
+
 }
 
 
